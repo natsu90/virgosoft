@@ -51,7 +51,7 @@ class Order extends BaseModel
     {
         return [
             'symbol' => TradeSymbol::class,
-            'side' => OrderSide::class
+            'side' => OrderSide::class,
             'status' => OrderStatus::class
         ];
     }
