@@ -159,7 +159,7 @@ class AssetRepositoryTest extends TestCase
             'locked_amount' => $existingLockedAmount
         ]);
 
-        $this->repo->unLock($this->testUserId, $this->testSymbol, $unlockingAmount);
+        $this->repo->unlock($this->testUserId, $this->testSymbol, $unlockingAmount);
 
         $this->assertDatabaseHas(Asset::getTableName(), [
             'user_id' => $this->testUserId,

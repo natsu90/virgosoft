@@ -49,7 +49,8 @@ class OrderRepositoryTest extends TestCase
             'user_id' => $user->getKey(),
             'amount' => $amount,
             'price' => $price,
-            'status' => OrderStatus::OPEN
+            'status' => OrderStatus::OPEN->value,
+            'side' => OrderSide::BUY->value
         ]);
 
         Event::assertDispatched(OrderCreated::class, function($event) use ($order) {
