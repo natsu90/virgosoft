@@ -4,9 +4,13 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Contracts\OrderRepositoryInterface;
+use App\Contracts\UserRepositoryInterface;
 use App\Repositories\OrderRepository;
+use App\Repositories\UserRepository;
 use App\Observers\OrderObserver;
+use App\Observers\UserObserver;
 use App\Models\Order;
+use App\Models\User;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,7 +28,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->app->bind(OrderRepositoryInterface::class, OrderRepository::class);
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
 
         Order::observe(OrderObserver::class);
+        User::observe(UserObserver::class);
     }
 }
