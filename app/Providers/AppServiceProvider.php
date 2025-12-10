@@ -5,12 +5,16 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Contracts\OrderRepositoryInterface;
 use App\Contracts\UserRepositoryInterface;
+use App\Contracts\AssetRepositoryInterface;
 use App\Repositories\OrderRepository;
 use App\Repositories\UserRepository;
+use App\Repositories\AssetRepository;
 use App\Observers\OrderObserver;
 use App\Observers\UserObserver;
+use App\Observers\AssetObserver;
 use App\Models\Order;
 use App\Models\User;
+use App\Models\Asset;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,8 +33,10 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(OrderRepositoryInterface::class, OrderRepository::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->bind(AssetRepositoryInterface::class, AssetRepository::class);
 
         Order::observe(OrderObserver::class);
         User::observe(UserObserver::class);
+        Asset::observe(AssetObserver::class);
     }
 }

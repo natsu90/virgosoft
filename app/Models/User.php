@@ -55,4 +55,9 @@ class User extends Authenticatable
     protected $attributes = [
         'balance' => 0
     ];
+
+    public function assets()
+    {
+        return $this->hasMany(Asset::class);
+    }
 }

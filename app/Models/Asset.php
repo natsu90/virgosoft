@@ -58,4 +58,9 @@ class Asset extends BaseModel
     {
         return AssetFactory::new();
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

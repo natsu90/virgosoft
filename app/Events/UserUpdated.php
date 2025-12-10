@@ -16,11 +16,17 @@ class UserUpdated implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
+     * @var User
+     */
+    public $user;
+
+    /**
      * Create a new event instance.
      */
-    public function __construct(
-        public User $user
-    ) {}
+    public function __construct(User $user)
+    {
+        $this->user = $user->load('assets');
+    }
 
     /**
      * Get the channels the event should broadcast on.
