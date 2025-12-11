@@ -35,7 +35,7 @@ class OrderService implements OrderServiceInterface
         $this->userRepository->deductBalance($userId, $cost);
         
         // create Order
-        $params['side'] = OrderSide::BUY->value;
+        $params['side'] = OrderSide::BUY;
         return $this->orderRepository->create($params);
     }
 
@@ -50,7 +50,7 @@ class OrderService implements OrderServiceInterface
 
         // update Order status
         return $this->orderRepository->update($orderId, [
-            'status' => OrderStatus::CANCELLED->value
+            'status' => OrderStatus::CANCELLED
         ]);
     }
 
@@ -62,7 +62,7 @@ class OrderService implements OrderServiceInterface
 
             // update OrderStatus
             return $this->orderRepository->update($orderId, [
-                'status' => OrderStatus::FILLED->value
+                'status' => OrderStatus::FILLED
             ]);
 
         // partial fill
@@ -71,10 +71,11 @@ class OrderService implements OrderServiceInterface
             // create a filled Order
             $filledOrder = $this->orderRepository->create([
                 'user_id' => $order->user_id,
+                'side' => OrderSide::BUY,
                 'symbol' => $order->symbol,
                 'price' => $order->price,
                 'amount' => $sellAmount,
-                'status' => OrderStatus::FILLED->value
+                'status' => OrderStatus::FILLED
             ]);
 
             // update unfullfilled Order amount
@@ -102,7 +103,7 @@ class OrderService implements OrderServiceInterface
 
         // create Order
         return $this->orderRepository->create([
-            'side' => OrderSide::SELL->value,
+            'side' => OrderSide::SELL,
             'user_id' => $userId,
             'symbol' => $tradeSymbol,
             'price' => $params['price'],
@@ -122,7 +123,7 @@ class OrderService implements OrderServiceInterface
 
         // update Order status
         return $this->orderRepository->update($orderId, [
-            'status' => OrderStatus::CANCELLED->value
+            'status' => OrderStatus::CANCELLED
         ]);
     }
 
@@ -130,13 +131,13 @@ class OrderService implements OrderServiceInterface
     {
         $order = $this->orderRepository->find($orderId);
         $userId = $order->user_id;
-        $tradeSymbol = $order->symbol->value;
+        $tradeSymbol = $order->symbol;
 
         if ($order->amount <= $buyAmount) {
 
             // update OrderStatus
             return $this->orderRepository->update($orderId, [
-                'status' => OrderStatus::FILLED->value
+                'status' => OrderStatus::FILLED
             ]);
 
         // partial fill
@@ -146,9 +147,10 @@ class OrderService implements OrderServiceInterface
             $filledOrder = $this->orderRepository->create([
                 'user_id' => $userId,
                 'symbol' => $order->symbol,
+                'side' => OrderSide::SELL,
                 'price' => $order->price,
                 'amount' => $buyAmount,
-                'status' => OrderStatus::FILLED->value
+                'status' => OrderStatus::FILLED
             ]);
 
             // update unfullfilled Order amount
