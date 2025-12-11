@@ -171,10 +171,6 @@ class OrderServiceTest extends TestCase
             ->with($orderId)
             ->once()->andReturn($orderMock);
 
-        $this->assetRepoMock->shouldReceive('bought')
-            ->with($userId, $orderMock->symbol->value, $buyOrderAmount)
-            ->once();
-
         $this->orderRepoMock->shouldReceive('update')
             ->with($orderId, ['status' => OrderStatus::FILLED->value])
             ->once()->andReturn($orderMock);
@@ -201,10 +197,6 @@ class OrderServiceTest extends TestCase
         $this->orderRepoMock->shouldReceive('find')
             ->with($orderId)
             ->once()->andReturn($orderMock);
-
-        $this->assetRepoMock->shouldReceive('bought')
-            ->with($userId, $orderMock->symbol->value, $sellAmount)
-            ->once();
 
         $filledOrderMock = Mockery::mock(Order::class);
         $this->orderRepoMock->shouldReceive('create')
@@ -345,14 +337,6 @@ class OrderServiceTest extends TestCase
             ->with($orderId)
             ->once()->andReturn($orderMock);
 
-        $this->assetRepoMock->shouldReceive('sold')
-            ->with($userId, $orderMock->symbol->value, $sellOrderAmount)
-            ->once();
-
-        $this->userRepoMock->shouldReceive('topupBalance')
-            ->with($userId, 15)
-            ->once();
-
         $this->orderRepoMock->shouldReceive('update')
             ->with($orderId, ['status' => OrderStatus::FILLED->value])
             ->once()->andReturn($orderMock);
@@ -379,14 +363,6 @@ class OrderServiceTest extends TestCase
         $this->orderRepoMock->shouldReceive('find')
             ->with($orderId)
             ->once()->andReturn($orderMock);
-
-        $this->assetRepoMock->shouldReceive('sold')
-            ->with($userId, $orderMock->symbol->value, $buyAmount)
-            ->once();
-
-        $this->userRepoMock->shouldReceive('topupBalance')
-            ->with($userId, 30)
-            ->once();
 
         $filledOrderMock = Mockery::mock(Order::class);
         $this->orderRepoMock->shouldReceive('create')

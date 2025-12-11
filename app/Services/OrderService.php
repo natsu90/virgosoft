@@ -60,9 +60,6 @@ class OrderService implements OrderServiceInterface
 
         if ($order->amount <= $sellAmount) {
 
-            // update Asset
-            $this->assetRepository->bought($order->user_id, $order->symbol->value, $order->amount);
-
             // update OrderStatus
             return $this->orderRepository->update($orderId, [
                 'status' => OrderStatus::FILLED->value
@@ -70,9 +67,6 @@ class OrderService implements OrderServiceInterface
 
         // partial fill
         } else {
-
-            // update Asset
-            $this->assetRepository->bought($order->user_id, $order->symbol->value, $sellAmount);
 
             // create a filled Order
             $filledOrder = $this->orderRepository->create([
@@ -140,13 +134,6 @@ class OrderService implements OrderServiceInterface
 
         if ($order->amount <= $buyAmount) {
 
-            // update Balance
-            $saleAmount = $order->amount * $order->price;
-            $this->userRepository->topupBalance($userId, $saleAmount);
-
-            // deduct locked Asset
-            $this->assetRepository->sold($userId, $tradeSymbol, $order->amount);
-
             // update OrderStatus
             return $this->orderRepository->update($orderId, [
                 'status' => OrderStatus::FILLED->value
@@ -154,13 +141,6 @@ class OrderService implements OrderServiceInterface
 
         // partial fill
         } else {
-
-            // update Balance
-            $saleAmount = $buyAmount * $order->price;
-            $this->userRepository->topupBalance($userId, $saleAmount);
-
-            // deduct locked Asset
-            $this->assetRepository->sold($userId, $tradeSymbol, $buyAmount);
 
             // create a filled Order
             $filledOrder = $this->orderRepository->create([
