@@ -11,6 +11,7 @@ use App\Enums\OrderStatus;
 use App\Exceptions\InsufficientBalanceException;
 use App\Exceptions\InsufficientAssetException;
 use App\Models\Order;
+use Illuminate\Support\Collection;
 
 class OrderService implements OrderServiceInterface
 {
@@ -53,7 +54,7 @@ class OrderService implements OrderServiceInterface
         ]);
     }
 
-    public function fillBuyOrder(int $orderId, float $sellAmount): Order
+    public function fillBuyOrder(int $orderId, float $sellAmount): Order|Collection
     {
         $order = $this->orderRepository->find($orderId);
 
@@ -74,7 +75,7 @@ class OrderService implements OrderServiceInterface
             $this->assetRepository->bought($order->user_id, $order->symbol->value, $sellAmount);
 
             // create a filled Order
-            $this->orderRepository->create([
+            $filledOrder = $this->orderRepository->create([
                 'user_id' => $order->user_id,
                 'symbol' => $order->symbol,
                 'price' => $order->price,
@@ -83,11 +84,12 @@ class OrderService implements OrderServiceInterface
             ]);
 
             // update unfullfilled Order amount
-            return $this->orderRepository->update($orderId, [
+            $incompleteOrder = $this->orderRepository->update($orderId, [
                 'amount' => $order->amount - $sellAmount
             ]);
-        }
 
+            return collect([$filledOrder, $incompleteOrder]);
+        }
     }
 
     public function createSellOrder(array $params): Order
@@ -130,7 +132,7 @@ class OrderService implements OrderServiceInterface
         ]);
     }
 
-    public function fillSellOrder(int $orderId, float $buyAmount): Order
+    public function fillSellOrder(int $orderId, float $buyAmount): Order|Collection
     {
         $order = $this->orderRepository->find($orderId);
         $userId = $order->user_id;
@@ -161,7 +163,7 @@ class OrderService implements OrderServiceInterface
             $this->assetRepository->sold($userId, $tradeSymbol, $buyAmount);
 
             // create a filled Order
-            $this->orderRepository->create([
+            $filledOrder = $this->orderRepository->create([
                 'user_id' => $userId,
                 'symbol' => $order->symbol,
                 'price' => $order->price,
@@ -170,9 +172,11 @@ class OrderService implements OrderServiceInterface
             ]);
 
             // update unfullfilled Order amount
-            return $this->orderRepository->update($orderId, [
+            $incompleteOrder = $this->orderRepository->update($orderId, [
                 'amount' => $order->amount - $buyAmount
             ]);
+
+            return collect([$filledOrder, $incompleteOrder]);
         }
     }
 }

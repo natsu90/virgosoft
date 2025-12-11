@@ -18,6 +18,7 @@ use App\Exceptions\InsufficientAssetException;
 use App\Enums\TradeSymbol;
 use App\Enums\OrderSide;
 use App\Enums\OrderStatus;
+use Illuminate\Support\Collection;
 
 class OrderServiceTest extends TestCase
 {
@@ -205,6 +206,7 @@ class OrderServiceTest extends TestCase
             ->with($userId, $orderMock->symbol->value, $sellAmount)
             ->once();
 
+        $filledOrderMock = Mockery::mock(Order::class);
         $this->orderRepoMock->shouldReceive('create')
             ->with([
                 'user_id' => $userId,
@@ -213,15 +215,17 @@ class OrderServiceTest extends TestCase
                 'amount' => $sellAmount,
                 'status' => OrderStatus::FILLED->value
             ])
-            ->once()->andReturn(Mockery::mock(Order::class));
+            ->once()->andReturn($filledOrderMock);
 
         $this->orderRepoMock->shouldReceive('update')
             ->with($orderId, ['amount' => 1])
             ->once()->andReturn($orderMock);
 
-        $order = $this->service->fillBuyOrder($orderId, $sellAmount);
+        $orders = $this->service->fillBuyOrder($orderId, $sellAmount);
 
-        $this->assertInstanceOf(Order::class, $order);
+        $this->assertInstanceOf(Collection::class, $orders);
+        $this->assertEquals($filledOrderMock, $orders[0]);
+        $this->assertEquals($orderMock, $orders[1]);
     }
 
     public function testCreateSellOrder()
@@ -384,6 +388,7 @@ class OrderServiceTest extends TestCase
             ->with($userId, 30)
             ->once();
 
+        $filledOrderMock = Mockery::mock(Order::class);
         $this->orderRepoMock->shouldReceive('create')
             ->with([
                 'user_id' => $userId,
@@ -392,14 +397,16 @@ class OrderServiceTest extends TestCase
                 'amount' => $buyAmount,
                 'status' => OrderStatus::FILLED->value
             ])
-            ->once();
+            ->once()->andReturn($filledOrderMock);
 
         $this->orderRepoMock->shouldReceive('update')
             ->with($orderId, ['amount' => 5])
             ->once()->andReturn($orderMock);
 
-        $order = $this->service->fillSellOrder($orderId, $buyAmount);
+        $orders = $this->service->fillSellOrder($orderId, $buyAmount);
 
-        $this->assertInstanceOf(Order::class, $order);
+        $this->assertInstanceOf(Collection::class, $orders);
+        $this->assertEquals($filledOrderMock, $orders[0]);
+        $this->assertEquals($orderMock, $orders[1]);
     }
 }

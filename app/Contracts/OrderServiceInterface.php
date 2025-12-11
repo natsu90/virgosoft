@@ -3,6 +3,7 @@
 namespace App\Contracts;
 
 use App\Models\Order;
+use Illuminate\Support\Collection;
 
 interface OrderServiceInterface
 {
@@ -17,9 +18,9 @@ interface OrderServiceInterface
     public function cancelBuyOrder(int $orderId): Order;
 
     /**
-     * Fill a BUY Order
+     * Fill a BUY Order, would return one or two Orders
      */
-    public function fillBuyOrder(int $orderId, float $sellAmount): Order;
+    public function fillBuyOrder(int $orderId, float $sellAmount): Order|Collection;
 
     /**
      * Create a SELL Order
@@ -32,7 +33,7 @@ interface OrderServiceInterface
     public function cancelSellOrder(int $orderId): Order;
 
     /**
-     * Fill a SELL Order
+     * Fill a SELL Order, would return one or two Orders
      */
-    public function fillSellOrder(int $orderId, float $buyAmount): Order;
+    public function fillSellOrder(int $orderId, float $buyAmount): Order|Collection;
 }
