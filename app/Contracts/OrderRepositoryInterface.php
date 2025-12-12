@@ -3,7 +3,6 @@
 namespace App\Contracts;
 
 use App\Models\Order;
-use Illuminate\Support\Collection;
 
 interface OrderRepositoryInterface
 {
@@ -39,7 +38,7 @@ interface OrderRepositoryInterface
      * @param float $buyPrice
      * @return Order
      */
-    public function findSellOrder(string $symbol, float $buyPrice): Order;
+    public function findSellOrder(string $symbol, float $buyPrice): Order|null;
 
     /**
      * Find a Buy Order with given Sell Price
@@ -48,5 +47,5 @@ interface OrderRepositoryInterface
      * @param float $sellPrice
      * @return Order
      */
-    public function findBuyOrder(string $symbol, float $sellPrice): Order;
+    public function findBuyOrder(string $symbol, float $sellPrice): Order|null;
 }

@@ -28,23 +28,23 @@ class OrderRepository implements OrderRepositoryInterface
         return Order::findOrFail($id);
     }
 
-    public function findSellOrder(string $symbol, float $buyPrice): Order
+    public function findSellOrder(string $symbol, float $buyPrice): Order|null
     {
         return Order::where('symbol', $symbol)
             ->where('side', OrderSide::SELL)
             ->where('status', OrderStatus::OPEN)
             ->where('price', '<=', $buyPrice)
-            ->orderBy('created_at', 'asc')
+            ->orderBy('id', 'asc')
             ->first();
     }
 
-    public function findBuyOrder(string $symbol, float $sellPrice): Order
+    public function findBuyOrder(string $symbol, float $sellPrice): Order|null
     {
         return Order::where('symbol', $symbol)
             ->where('side', OrderSide::BUY)
             ->where('status', OrderStatus::OPEN)
             ->where('price', '>=', $sellPrice)
-            ->orderBy('created_at', 'asc')
+            ->orderBy('id', 'asc')
             ->first();
     }
 }
