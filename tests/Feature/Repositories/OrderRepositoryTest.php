@@ -14,6 +14,9 @@ use App\Enums\OrderStatus;
 use App\Events\OrderCreated;
 use App\Events\OrderUpdated;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Queue;
+use App\Listeners\FindOrderMatch;
+use Illuminate\Events\CallQueuedListener;
 
 class OrderRepositoryTest extends TestCase
 {
@@ -58,9 +61,19 @@ class OrderRepositoryTest extends TestCase
         });
     }
 
+    public function testEventListener()
+    {
+        Queue::fake();
+
+        $order = Order::factory()->create();
+
+        Queue::assertPushed(CallQueuedListener::class, function($job) {
+            return $job->class == FindOrderMatch::class;
+        });
+    }
+
     public function testFind()
     {
-        $order = Order::factory()->create();
 
         $fetchedOrder = $this->repo->find($order->getKey());
 
