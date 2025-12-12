@@ -286,44 +286,4 @@ class OrderServiceTest extends TestCase
         $this->assertInstanceOf(Collection::class, $result);
         $this->assertEquals($result[1]->getKey(), $order->getKey());
     }
-
-    // public function testFindSellOrderMatch()
-    // {
-    //     $symbol = TradeSymbol::BTC;
-
-    //     // Seller
-    //     $seller = User::factory()->create([
-    //         'balance' => 1
-    //     ]);
-    //     // Asset Seller
-    //     Asset::factory()->create([
-    //         'user_id' = $seller->getKey(),
-    //         'symbol' => $symbol,
-    //         'amount' => 10,
-    //         'locked_amount' => 0
-    //     ]);
-    //     // Buyer
-    //     $buyer = User::factory()->create([
-    //         'balance' => 10
-    //     ]);
-
-    //     // BUY Order
-    //     Order::factory()->createQuietly([
-    //         'user_id' => $buyer->getKey(),
-    //         'symbol' => $symbol,
-    //         'price' => 2,
-    //         'amount' => 3,
-    //         'status' => OrderStatus::OPEN
-    //     ]);
-    //     // SELL Order
-    //     Order::factory()->createQuietly([
-    //         'user_id' => $seller->getKey(),
-    //         'symbol' => $symbol,
-    //         'price' => 1.5,
-    //         'amount' => 2,
-    //         'status' => OrderStatus::OPEN
-    //     ]);
-
-
-    // }
 }

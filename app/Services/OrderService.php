@@ -71,7 +71,7 @@ class OrderService implements OrderServiceInterface
             // create a filled Order
             $filledOrder = $this->orderRepository->create([
                 'user_id' => $order->user_id,
-                'side' => OrderSide::BUY,
+                'side' => $order->side,
                 'symbol' => $order->symbol,
                 'price' => $order->price,
                 'amount' => $sellAmount,
@@ -130,8 +130,6 @@ class OrderService implements OrderServiceInterface
     public function fillSellOrder(int $orderId, float $buyAmount): Order|Collection
     {
         $order = $this->orderRepository->find($orderId);
-        $userId = $order->user_id;
-        $tradeSymbol = $order->symbol;
 
         if ($order->amount <= $buyAmount) {
 
@@ -145,7 +143,7 @@ class OrderService implements OrderServiceInterface
 
             // create a filled Order
             $filledOrder = $this->orderRepository->create([
-                'user_id' => $userId,
+                'user_id' => $order->user_id,
                 'symbol' => $order->symbol,
                 'side' => OrderSide::SELL,
                 'price' => $order->price,
