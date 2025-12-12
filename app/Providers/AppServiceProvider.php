@@ -8,11 +8,13 @@ use App\Contracts\UserRepositoryInterface;
 use App\Contracts\AssetRepositoryInterface;
 use App\Contracts\TradeRepositoryInterface;
 use App\Contracts\OrderServiceInterface;
+use App\Contracts\TradeServiceInterface;
 use App\Repositories\OrderRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\AssetRepository;
 use App\Repositories\TradeRepository;
 use App\Services\OrderService;
+use App\Services\TradeService;
 use App\Observers\OrderObserver;
 use App\Observers\UserObserver;
 use App\Observers\AssetObserver;
@@ -43,6 +45,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(TradeRepositoryInterface::class, TradeRepository::class);
 
         $this->app->bind(OrderServiceInterface::class, OrderService::class);
+        $this->app->bind(TradeServiceInterface::class, TradeService::class);
 
         Order::observe(OrderObserver::class);
         User::observe(UserObserver::class);
