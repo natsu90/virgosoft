@@ -28,14 +28,12 @@ class OrderRepositoryTest extends TestCase
 
         $this->repo = $this->app->make(OrderRepositoryInterface::class);
 
-        Event::fake([
-            OrderCreated::class,
-            OrderUpdated::class
-        ]);
     }
 
     public function testCreate()
     {
+        Event::fake(OrderCreated::class);
+
         $user = User::factory()->create();
         $price = fake()->randomFloat(4, 10, 100);
         $amount = fake()->randomFloat(8, 0.0001, 10);
@@ -74,6 +72,9 @@ class OrderRepositoryTest extends TestCase
 
     public function testFind()
     {
+        Event::fake(OrderCreated::class);
+
+        $order = Order::factory()->create();
 
         $fetchedOrder = $this->repo->find($order->getKey());
 
@@ -83,6 +84,11 @@ class OrderRepositoryTest extends TestCase
 
     public function testUpdate()
     {
+        Event::fake([
+            OrderCreated::class,
+            OrderUpdated::class
+        ]);
+
         $order = Order::factory()->create();
         $amount = fake()->randomFloat(8, 0.0001, 10);
         $status = fake()->randomElement(OrderStatus::cases());
@@ -107,6 +113,8 @@ class OrderRepositoryTest extends TestCase
 
     public function testFindSellOrder()
     {
+        Event::fake(OrderCreated::class);
+        
         $buySymbol = TradeSymbol::BTC->value;
         $buyOrder = Order::factory()->create([
             'symbol' => $buySymbol,
@@ -170,6 +178,8 @@ class OrderRepositoryTest extends TestCase
 
     public function testFindBuyOrder()
     {
+        Event::fake(OrderCreated::class);
+
         $sellSymbol = TradeSymbol::ETH->value;
         $sellOrder = Order::factory()->create([
             'symbol' => $sellSymbol,

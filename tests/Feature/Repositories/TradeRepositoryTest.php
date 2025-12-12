@@ -12,6 +12,7 @@ use App\Models\Trade;
 use App\Enums\OrderSide;
 use App\Enums\TradeSymbol;
 use App\Events\TradeCreated;
+use App\Events\OrderCreated;
 use Illuminate\Support\Facades\Event;
 
 class TradeRepositoryTest extends TestCase
@@ -24,7 +25,10 @@ class TradeRepositoryTest extends TestCase
 
         $this->repo = $this->app->make(TradeRepositoryInterface::class);
 
-        Event::fake(TradeCreated::class);
+        Event::fake([
+            TradeCreated::class,
+            OrderCreated::class
+        ]);
     }
 
     public function testCreate()
