@@ -6,6 +6,7 @@ use App\Contracts\OrderRepositoryInterface;
 use App\Models\Order;
 use App\Enums\OrderSide;
 use App\Enums\OrderStatus;
+use Illuminate\Support\Collection;
 
 class OrderRepository implements OrderRepositoryInterface
 {
@@ -46,5 +47,10 @@ class OrderRepository implements OrderRepositoryInterface
             ->where('price', '>=', $sellPrice)
             ->orderBy('id', 'asc')
             ->first();
+    }
+
+    public function getAll(array $params): Collection
+    {
+        return Order::where($params)->get();
     }
 }

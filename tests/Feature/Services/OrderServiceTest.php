@@ -71,7 +71,7 @@ class OrderServiceTest extends TestCase
             'amount' => 2
         ]);
 
-        $this->service->cancelBuyOrder($order->getKey());
+        $this->service->cancelBuyOrder($order);
 
         $this->assertDatabaseHas(Order::getTableName(), [
             'user_id' => $buyer->getKey(),
@@ -209,7 +209,7 @@ class OrderServiceTest extends TestCase
             'amount' => 2
         ]);
 
-        $result = $this->service->cancelSellOrder($order->getKey());
+        $result = $this->service->cancelSellOrder($order);
         
         $this->assertDatabaseHas(Order::getTableName(), [
             'user_id' => $seller->getKey(),

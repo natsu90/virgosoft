@@ -3,6 +3,7 @@
 namespace App\Contracts;
 
 use App\Models\Order;
+use Illuminate\Support\Collection;
 
 interface OrderRepositoryInterface
 {
@@ -48,4 +49,12 @@ interface OrderRepositoryInterface
      * @return Order
      */
     public function findBuyOrder(string $symbol, float $sellPrice): Order|null;
+
+    /**
+     * Get All Orders filtered by given parameters
+     * 
+     * @param array $params
+     * @return Collection
+     */
+    public function getAll(array $params): Collection;
 }

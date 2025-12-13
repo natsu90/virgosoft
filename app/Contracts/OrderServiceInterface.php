@@ -15,7 +15,7 @@ interface OrderServiceInterface
     /**
      * Cancel a BUY Order
      */
-    public function cancelBuyOrder(int $orderId): Order;
+    public function cancelBuyOrder(Order $buyOrder): Order;
 
     /**
      * Fill a BUY Order, would return one or two Orders
@@ -30,7 +30,7 @@ interface OrderServiceInterface
     /**
      * Cancel a SELL Order
      */
-    public function cancelSellOrder(int $orderId): Order;
+    public function cancelSellOrder(Order $sellOrder): Order;
 
     /**
      * Fill a SELL Order, would return one or two Orders

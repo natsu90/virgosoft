@@ -39,9 +39,9 @@ class OrderService implements OrderServiceInterface
         return $this->orderRepository->create($params);
     }
 
-    public function cancelBuyOrder(int $orderId): Order
+    public function cancelBuyOrder(Order $order): Order
     {
-        $order = $this->orderRepository->find($orderId);
+        $orderId = $order->getKey();
         $userId = $order->user_id;
         $cost = $order->amount * $order->price;
 
@@ -111,9 +111,9 @@ class OrderService implements OrderServiceInterface
         ]);
     }
 
-    public function cancelSellOrder(int $orderId): Order
+    public function cancelSellOrder(Order $order): Order
     {
-        $order = $this->orderRepository->find($orderId);
+        $orderId = $order->getKey();
         $userId = $order->user_id;
         $tradeSymbol = $order->symbol->value;
         $amount = $order->amount;
@@ -157,6 +157,26 @@ class OrderService implements OrderServiceInterface
             ]);
 
             return collect([$filledOrder, $incompleteOrder]);
+        }
+    }
+
+    public function create(array $params)
+    {
+        if ($params['side'] === OrderSide::BUY->value) {
+            return $this->createBuyOrder($params);
+        } else {
+            return $this->createSellOrder($params);
+        }
+    }
+
+    public function cancel(int $id)
+    {
+        $order = $this->orderRepository->find($id);
+
+        if ($order->side == OrderSide::BUY) {
+            return $this->cancelBuyOrder($order);
+        } else {
+            return $this->cancelSellOrder($order);
         }
     }
 }
