@@ -22,17 +22,21 @@ class TradeSeeder extends Seeder
         Trade::unsetEventDispatcher();
 
         $otherUser = User::factory()->create();
+        $otherUserId = $otherUser->getKey();
 
         for ($i = 0; $i < 10; $i++)
         {
+            $buyerId = fake()->randomElement([$userId, $otherUserId]);
+            $sellerId = $buyerId == $userId ? $otherUserId : $userId;
+
             $buy = Order::factory()->create([
-                'user_id' => fake()->randomElement([$userId, $otherUser->getKey()]),
+                'user_id' => $buyerId,
                 'side' => OrderSide::BUY,
                 'status' => OrderStatus::FILLED
             ]);
 
             $sell = Order::factory()->create([
-                'user_id' => fake()->randomElement([$userId, $otherUser->getKey()]),
+                'user_id' => $sellerId,
                 'symbol' => $buy->symbol,
                 'side' => OrderSide::SELL,
                 'amount' => $buy->amount,

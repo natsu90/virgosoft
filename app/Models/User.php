@@ -70,8 +70,8 @@ class User extends Authenticatable
     public function getTradesAttribute()
     {
         return Trade::select('trades.*')
-            ->selectRaw('IFNULL(buy.side, sell.side) AS side')
-            ->selectRaw('ROUND(trades.price * trades.amount, 4) AS sales')
+            ->selectRaw("(CASE WHEN buy.user_id='". $this->id ."' THEN buy.side ELSE sell.side END) AS side")
+            ->selectRaw('ROUND(trades.price * trades.amount + commission, 4) AS sales')
             ->leftJoin('orders as buy', 'buy.id', '=', 'trades.buy_order_id')
             ->leftJoin('orders as sell', 'sell.id', '=', 'trades.sell_order_id')
             ->where('buy.user_id', $this->id)
