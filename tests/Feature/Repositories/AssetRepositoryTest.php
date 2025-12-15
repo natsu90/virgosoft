@@ -9,6 +9,7 @@ use App\Contracts\AssetRepositoryInterface;
 use App\Models\User;
 use App\Models\Asset;
 use App\Events\UserUpdated;
+use App\Events\UserCreated;
 use Illuminate\Support\Facades\Event;
 use App\Enums\TradeSymbol;
 
@@ -35,12 +36,15 @@ class AssetRepositoryTest extends TestCase
     {
         parent::setUp();
 
+        Event::fake([
+            UserCreated::class,
+            UserUpdated::class
+        ]);
+
         $this->repo = $this->app->make(AssetRepositoryInterface::class);
         $this->testUser = User::factory()->create();
         $this->testUserId = $this->testUser->getKey();
         $this->testSymbol = TradeSymbol::BTC->value;
-
-        Event::fake(UserUpdated::class);
     }
 
     public function testGetNew()

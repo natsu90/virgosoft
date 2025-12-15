@@ -13,6 +13,7 @@ use App\Enums\OrderSide;
 use App\Enums\OrderStatus;
 use App\Events\OrderCreated;
 use App\Events\OrderUpdated;
+use App\Events\UserCreated;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use App\Listeners\FindOrderMatch;
@@ -28,6 +29,7 @@ class OrderRepositoryTest extends TestCase
 
         $this->repo = $this->app->make(OrderRepositoryInterface::class);
 
+        Event::fake(UserCreated::class);
     }
 
     public function testCreate()

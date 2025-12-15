@@ -25,6 +25,7 @@ class OrderServiceTest extends TestCase
         $this->service = $this->app->make(OrderServiceInterface::class);
 
         Order::unsetEventDispatcher();
+        User::unsetEventDispatcher();
     }
 
     public function testCreateBuyOrder()

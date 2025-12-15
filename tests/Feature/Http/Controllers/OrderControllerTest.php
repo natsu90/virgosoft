@@ -93,9 +93,10 @@ class OrderControllerTest extends TestCase
         $user = User::factory()->create();
         $token = $user->createToken('api-token')->plainTextToken;
 
-        Asset::factory()->create([
-            'user_id' => $user->getKey(),
-            'symbol' => TradeSymbol::BTC,
+        Asset::where([
+             'user_id' => $user->getKey(),
+            'symbol' => TradeSymbol::BTC->value
+        ])->update([
             'amount' => 10,
             'locked_amount' => 0
         ]);
@@ -160,9 +161,10 @@ class OrderControllerTest extends TestCase
         $token = $user->createToken('api-token')->plainTextToken;
         $symbol = TradeSymbol::BTC->value;
 
-        Asset::factory()->create([
+        Asset::where([
             'user_id' => $user->getKey(),
-            'symbol' => $symbol,
+            'symbol' => $symbol
+        ])->update([
             'locked_amount' => 2
         ]);
 

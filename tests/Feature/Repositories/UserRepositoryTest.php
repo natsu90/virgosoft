@@ -8,6 +8,7 @@ use Tests\TestCase;
 use App\Contracts\UserRepositoryInterface;
 use App\Models\User;
 use App\Events\UserUpdated;
+use App\Events\UserCreated;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Event;
 
@@ -21,7 +22,10 @@ class UserRepositoryTest extends TestCase
 
         $this->repo = $this->app->make(UserRepositoryInterface::class);
 
-        Event::fake(UserUpdated::class);
+        Event::fake([
+            UserUpdated::class,
+            UserCreated::class
+        ]);
     }
 
     public function testCreate()

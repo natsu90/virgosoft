@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\User;
 use App\Events\UserUpdated;
+use App\Events\UserCreated;
 
 class UserObserver
 {
@@ -12,7 +13,7 @@ class UserObserver
      */
     public function created(User $user): void
     {
-        //
+        UserCreated::dispatch($user);
     }
 
     /**

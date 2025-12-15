@@ -80,10 +80,6 @@ class ProfileControllerTest extends TestCase
         $user = User::factory()->create();
         $token = $user->createToken('api-token')->plainTextToken;
 
-        Asset::factory()->create([
-            'user_id' => $user->getKey()
-        ]);
-
         Order::factory()->count(10)->create([
             'user_id' => $user->getKey()
         ]);

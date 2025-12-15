@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Contracts\TradeServiceInterface;
 use App\Events\OrderMatched;
 use App\Events\OrderCreated;
+use App\Events\UserCreated;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Asset;
@@ -30,7 +31,8 @@ class TradeServiceTest extends TestCase
 
         Event::fake([
             OrderMatched::class,
-            OrderCreated::class
+            OrderCreated::class,
+            UserCreated::class
         ]);
     }
 
