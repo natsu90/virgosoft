@@ -10,6 +10,8 @@ use App\Models\Order;
 use App\Models\Asset;
 use Illuminate\Support\Facades\Event;
 use App\Events\OrderCreated;
+use Database\Seeders\TradeSeeder;
+use App\Enums\OrderStatus;
 
 class ProfileControllerTest extends TestCase
 {
@@ -83,8 +85,12 @@ class ProfileControllerTest extends TestCase
         $token = $user->createToken('api-token')->plainTextToken;
 
         Order::factory()->count(10)->create([
-            'user_id' => $user->getKey()
+            'user_id' => $user->getKey(),
+            'status' => fake()->randomElement([OrderStatus::OPEN, OrderStatus::CANCELLED])
         ]);
+
+        $seeder = new TradeSeeder;
+        $seeder->run($user->getKey());
 
         $response = $this
             ->withHeaders(['Authorization' => 'Bearer ' . $token])
@@ -112,6 +118,17 @@ class ProfileControllerTest extends TestCase
                             'amount',
                             'side',
                             'status'
+                        ]
+                    ],
+                    'trades' => [
+                        '*' => [
+                            'id',
+                            'buy_order_id',
+                            'sell_order_id',
+                            'symbol',
+                            'price',
+                            'amount',
+                            'commission'
                         ]
                     ]
                 ]

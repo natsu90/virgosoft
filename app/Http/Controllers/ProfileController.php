@@ -22,7 +22,7 @@ class ProfileController extends Controller
 
         return response()->json([
                 'message' => 'User fetched successfully!',
-                'data' => $user->load('assets', 'orders'),
+                'data' => $user->load('assets', 'orders')->append('trades'),
             ]);
     }
 

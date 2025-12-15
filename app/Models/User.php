@@ -66,4 +66,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class);
     }
+
+    public function getTradesAttribute()
+    {
+        return Trade::leftJoin('orders as buy', 'buy.id', '=', 'trades.buy_order_id')
+            ->leftJoin('orders as sell', 'sell.id', '=', 'trades.sell_order_id')
+            ->where('buy.user_id', $this->id)
+            ->where('sell.user_id', $this->id)
+            ->get();
+    }
 }
