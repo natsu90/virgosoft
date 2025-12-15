@@ -123,11 +123,11 @@ class ProfileControllerTest extends TestCase
                     'trades' => [
                         '*' => [
                             'id',
-                            'buy_order_id',
-                            'sell_order_id',
+                            'side',
                             'symbol',
                             'price',
                             'amount',
+                            'sales',
                             'commission'
                         ]
                     ]
