@@ -31,10 +31,12 @@ class ProfileControllerTest extends TestCase
                 'message',
                 'data' => [
                     'id',
-                    'email'
+                    'email',
+                    'balance'
                 ]
             ])
-            ->assertJsonPath('data.email', $email);
+            ->assertJsonPath('data.email', $email)
+            ->assertJsonPath('data.balance', 10);
     }
 
     public function testLogin()

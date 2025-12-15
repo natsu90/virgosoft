@@ -33,6 +33,7 @@ class ProfileController extends Controller
                 'name' => $request->email,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
+                'balance' => 10 // assign free $10 by default
             ]);
 
             return response()->json([
