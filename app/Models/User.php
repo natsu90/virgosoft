@@ -69,14 +69,13 @@ class User extends Authenticatable
 
     public function getTradesAttribute()
     {
-        return Trade::select(
-            'trades.id', 'trades.symbol', 'trades.price', 'trades.amount', 'commission')
+        return Trade::select('trades.*')
             ->selectRaw('IFNULL(buy.side, sell.side) AS side')
-            ->selectRaw('(trades.price * trades.amount) AS sales')
+            ->selectRaw('ROUND(trades.price * trades.amount, 4) AS sales')
             ->leftJoin('orders as buy', 'buy.id', '=', 'trades.buy_order_id')
             ->leftJoin('orders as sell', 'sell.id', '=', 'trades.sell_order_id')
             ->where('buy.user_id', $this->id)
-            ->where('sell.user_id', $this->id)
+            ->Orwhere('sell.user_id', $this->id)
             ->get();
     }
 }
