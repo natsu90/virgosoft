@@ -15,11 +15,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $userId = $this->command->ask('User ID', null);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        $this->callWith(OrderSeeder::class, ['userId' => $userId]);
+        $this->callWith(TradeSeeder::class, ['userId' => $userId]);
     }
 }
