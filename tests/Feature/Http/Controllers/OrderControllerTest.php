@@ -77,15 +77,30 @@ class OrderControllerTest extends TestCase
             ->assertJsonStructure([
                 'message',
                 'data' => [
-                    'id',
-                    'symbol',
-                    'price',
-                    'amount',
-                    'side',
-                    'status'
+                    'order' => [
+                        'id',
+                        'symbol',
+                        'price',
+                        'amount',
+                        'side',
+                        'status'
+                    ],
+                    'user' => [
+                        'id',
+                        'email',
+                        'balance',
+                        'assets' => [
+                            '*' => [
+                                'id',
+                                'symbol',
+                                'amount',
+                                'locked_amount'
+                            ]
+                        ]
+                    ]
                 ]
             ])
-            ->assertJsonPath('data.status', OrderStatus::OPEN->value);
+            ->assertJsonPath('data.order.status', OrderStatus::OPEN->value);
     }
 
     public function testCreateSell()
@@ -115,15 +130,30 @@ class OrderControllerTest extends TestCase
             ->assertJsonStructure([
                 'message',
                 'data' => [
-                    'id',
-                    'symbol',
-                    'price',
-                    'amount',
-                    'side',
-                    'status'
+                    'order' => [
+                        'id',
+                        'symbol',
+                        'price',
+                        'amount',
+                        'side',
+                        'status'
+                    ],
+                    'user' => [
+                        'id',
+                        'email',
+                        'balance',
+                        'assets' => [
+                            '*' => [
+                                'id',
+                                'symbol',
+                                'amount',
+                                'locked_amount'
+                            ]
+                        ]
+                    ]
                 ]
             ])
-            ->assertJsonPath('data.status', OrderStatus::OPEN->value);
+            ->assertJsonPath('data.order.status', OrderStatus::OPEN->value);
     }
 
     public function testCancelBuy()
@@ -144,15 +174,30 @@ class OrderControllerTest extends TestCase
             ->assertJsonStructure([
                 'message',
                 'data' => [
-                    'id',
-                    'symbol',
-                    'price',
-                    'amount',
-                    'side',
-                    'status'
+                    'order' => [
+                        'id',
+                        'symbol',
+                        'price',
+                        'amount',
+                        'side',
+                        'status'
+                    ],
+                    'user' => [
+                        'id',
+                        'email',
+                        'balance',
+                        'assets' => [
+                            '*' => [
+                                'id',
+                                'symbol',
+                                'amount',
+                                'locked_amount'
+                            ]
+                        ]
+                    ]
                 ]
             ])
-            ->assertJsonPath('data.status', OrderStatus::CANCELLED->value);
+            ->assertJsonPath('data.order.status', OrderStatus::CANCELLED->value);
     }
 
     public function testCancelSell()
@@ -189,14 +234,29 @@ class OrderControllerTest extends TestCase
             ->assertJsonStructure([
                 'message',
                 'data' => [
-                    'id',
-                    'symbol',
-                    'price',
-                    'amount',
-                    'side',
-                    'status'
+                    'order' => [
+                        'id',
+                        'symbol',
+                        'price',
+                        'amount',
+                        'side',
+                        'status'
+                    ],
+                    'user' => [
+                        'id',
+                        'email',
+                        'balance',
+                        'assets' => [
+                            '*' => [
+                                'id',
+                                'symbol',
+                                'amount',
+                                'locked_amount'
+                            ]
+                        ]
+                    ]
                 ]
             ])
-            ->assertJsonPath('data.status', OrderStatus::CANCELLED->value);
+            ->assertJsonPath('data.order.status', OrderStatus::CANCELLED->value);
     }
 }

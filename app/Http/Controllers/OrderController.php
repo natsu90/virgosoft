@@ -39,7 +39,10 @@ class OrderController extends Controller
 
         return response()->json([
             'message' => 'Order created successfully!',
-            'data' => new OrderResource($order)
+            'data' => [
+                'order' => new OrderResource($order),
+                'user' => $order->user->load('assets')
+            ]
         ]);
     }
 
@@ -49,7 +52,10 @@ class OrderController extends Controller
 
         return response()->json([
             'message' => 'Order cancelled successfully!',
-            'data' => new OrderResource($order)
+            'data' => [
+                'order' => new OrderResource($order),
+                'user' => $order->user->load('assets')
+            ]
         ]);
     }
 }
