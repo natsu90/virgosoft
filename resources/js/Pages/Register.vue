@@ -25,58 +25,39 @@
 </script>
 
 <template>
-  <!--
-    This example requires updating your template:
 
-    ```
-    <html class="h-full bg-gray-900">
-    <body class="h-full">
-    ```
-  -->
-  <div class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-      <img class="mx-auto h-10 w-auto" src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company" />
-      <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-white">Create an account</h2>
+<div class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm rounded-xl border border-gray-200 py-8 px-6 max-w-90 w-full">
+    <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
+        <svg class="h-8 w-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+        </svg>
     </div>
 
-    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-      <form @submit.prevent="submit" class="space-y-6" action="#" method="POST">
-        <div>
-          <label for="email" class="block text-sm/6 font-medium text-gray-100">Email address</label>
-          <div class="mt-2">
-            <input v-model="formData.email" type="email" name="email" id="email" autocomplete="email" required="" class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />
-          </div>
+    <h3 class="mb-6 text-center text-xl font-bold text-gray-800">Create an Account</h3>
+
+    <form @submit.prevent="submit">
+        <div class="mb-4">
+            <label class="mb-1 block text-sm font-medium text-gray-700">Email</label>
+            <input v-model="formData.email" name="email" type="text" class="w-full rounded-lg border border-gray-300 px-3 py-2 transition outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500" required="" />
         </div>
 
-        <div>
-          <div class="flex items-center justify-between">
-            <label for="password" class="block text-sm/6 font-medium text-gray-100">Password</label>
-          </div>
-          <div class="mt-2">
-            <input v-model="formData.password" type="password" name="password" id="password" autocomplete="current-password" required="" class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />
-          </div>
+        <div class="mb-6">
+            <label class="mb-1 block text-sm font-medium text-gray-700">Password</label>
+            <input v-model="formData.password" name="password" type="password" class="w-full rounded-lg border border-gray-300 px-3 py-2 transition outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500" required="" />
         </div>
 
-        <div>
-          <div class="flex items-center justify-between">
-            <label for="password" class="block text-sm/6 font-medium text-gray-100">Confirm Password</label>
-          </div>
-          <div class="mt-2">
-            <input v-model="formData.password_confirmation" type="password" name="confirm_password" id="confirm_password" autocomplete="current-password" required="" class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />
-          </div>
+        <div class="mb-6">
+            <label class="mb-1 block text-sm font-medium text-gray-700">Confirm Password</label>
+            <input v-model="formData.password_confirmation" type="password" class="w-full rounded-lg border border-gray-300 px-3 py-2 transition outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500" required="" />
         </div>
 
-        <div>
-          <v-button @click="submit" class="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Register</v-button>
+        <button @click="submit" class="w-full rounded-lg bg-blue-500 px-4 py-2 font-medium text-white transition duration-300 hover:bg-blue-600">Register</button>
+
+        <div class="mt-4 text-center">
+            <a href="/login" class="text-sm text-blue-500 hover:text-blue-600">Login here</a>
         </div>
-      </form>
-
-      <p class="mt-10 text-center text-sm/6 text-gray-400">
-        Already a member?
-        {{ ' ' }}
-        <a href="/login" class="font-semibold text-indigo-400 hover:text-indigo-300">Login here</a>
-      </p>
-
-    </div>
+    </form>
   </div>
+</div>
 </template>
