@@ -17,8 +17,7 @@ class OrderSeeder extends Seeder
         Order::unsetEventDispatcher();
 
         Order::factory()->count(10)->create([
-            'user_id' => $userId,
-            'status' => fake()->randomElement([OrderStatus::OPEN, OrderStatus::CANCELLED])
+            'user_id' => $userId
         ]);
     }
 }

@@ -34,7 +34,7 @@ class OrderFactory extends Factory
             'side' => fake()->randomElement(OrderSide::cases()),
             'price' => fake()->randomFloat(4, 10, 100),
             'amount' => fake()->randomFloat(8, 0.0001, 10),
-            'status' => fake()->randomElement(OrderStatus::cases())
+            'status' => fake()->randomElement([OrderStatus::OPEN, OrderStatus::CANCELLED])
         ];
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Order;
 use App\Models\Trade;
+use App\Models\User;
 use App\Enums\TradeSymbol;
 use App\Enums\OrderSide;
 use App\Enums\OrderStatus;
@@ -20,16 +21,18 @@ class TradeSeeder extends Seeder
         Order::unsetEventDispatcher();
         Trade::unsetEventDispatcher();
 
+        $otherUser = User::factory()->create();
+
         for ($i = 0; $i < 10; $i++)
         {
             $buy = Order::factory()->create([
-                'user_id' => $userId,
+                'user_id' => fake()->randomElement([$userId, $otherUser->getKey()]),
                 'side' => OrderSide::BUY,
                 'status' => OrderStatus::FILLED
             ]);
 
             $sell = Order::factory()->create([
-                'user_id' => $userId,
+                'user_id' => fake()->randomElement([$userId, $otherUser->getKey()]),
                 'symbol' => $buy->symbol,
                 'side' => OrderSide::SELL,
                 'amount' => $buy->amount,
