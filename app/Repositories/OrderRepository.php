@@ -51,6 +51,6 @@ class OrderRepository implements OrderRepositoryInterface
 
     public function getAll(array $params): Collection
     {
-        return Order::where($params)->get();
+        return Order::where($params)->orderBy('updated_at', 'desc')->get();
     }
 }

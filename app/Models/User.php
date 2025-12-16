@@ -64,7 +64,7 @@ class User extends Authenticatable
 
     public function orders()
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Order::class)->orderBy('updated_at', 'desc');
     }
 
     public function getTradesAttribute()
@@ -76,6 +76,7 @@ class User extends Authenticatable
             ->leftJoin('orders as sell', 'sell.id', '=', 'trades.sell_order_id')
             ->where('buy.user_id', $this->id)
             ->Orwhere('sell.user_id', $this->id)
+            ->orderBy('created_at', 'desc')
             ->get();
     }
 }
