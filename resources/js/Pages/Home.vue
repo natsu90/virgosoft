@@ -35,9 +35,7 @@
             'OrderMatched',
             async (e) => {
                 toast.success('There is a matched order!')
-                console.log(e.sellOrder)
-                console.log(e.buyOrder)
-                await getOrders()
+                await getProfile()
             },
         ).listen();
     })
@@ -305,7 +303,7 @@
                 </div>
                 <p class="text-2xl text-grey-darker font-medium mb-4">No buys or sells yet</p>
                 <div>
-                  <button type="button" class="bg-blue hover:bg-blue-dark text-white border border-blue-dark rounded px-6 py-4">Buy now</button>
+                  <button @click="openOrderForm" type="button" class="bg-blue hover:bg-blue-dark text-white border border-blue-dark rounded px-6 py-4">Buy now</button>
                 </div>
               </div>
             </div>
