@@ -56,6 +56,10 @@ php artisan migrate
 ```
 npm run build
 ```
+8. Listen to Queues
+```
+php artisan queue:listen
+```
 The app should be accessible on `http://localhost`
 
 ## Test
