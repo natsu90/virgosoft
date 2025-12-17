@@ -17,5 +17,6 @@ Route::middleware(['auth:sanctum', 'append.user.id'])->group(function () {
     Route::get('/orders', [OrderController::class, 'getAll']);
     Route::post('/orders', [OrderController::class, 'create']);
     Route::post('/orders/{id}/cancel', [OrderController::class, 'cancel']);
+    Route::get('/trades', [OrderController::class, 'getAllTrades']);
 });
 

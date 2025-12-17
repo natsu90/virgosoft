@@ -28,6 +28,8 @@
     onMounted(async () => {
         document.body.classList.add(bodyClass)
         await getProfile()
+        await getOrders()
+        await getTrades()
 
         // Pusher
         useEcho(
@@ -36,6 +38,8 @@
             async (e) => {
                 toast.success('There is a matched order!')
                 await getProfile()
+                await getOrders()
+                await getTrades()
             },
         ).listen();
     })
@@ -49,8 +53,6 @@
             const response = await axios.get('/api/profile')
             user.value = response.data.data
             assets.value = response.data.data.assets
-            orders.value = response.data.data.orders
-            trades.value = response.data.data.trades
             toast.info(response.data.message)
         } catch (error) {
             toast.error(error.response.data.message)
@@ -107,6 +109,11 @@
     function closeOrderForm() {
         orderForm.value.classList.add('hidden')
         orderForm.value.classList.remove('flex')
+    }
+
+    async function getTrades() {
+        const response = await axios.get('/api/trades')
+        trades.value = response.data.data
     }
 
 </script>

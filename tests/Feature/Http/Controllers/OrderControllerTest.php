@@ -259,4 +259,10 @@ class OrderControllerTest extends TestCase
             ])
             ->assertJsonPath('data.order.status', OrderStatus::CANCELLED->value);
     }
+
+    public function testGetAllTrades()
+    {
+        // $trades = Trade::factory()->count(10)->create();
+        // $userId = $trades->first()->
+    }
 }

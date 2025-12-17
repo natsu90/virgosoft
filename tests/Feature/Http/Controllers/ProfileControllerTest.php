@@ -109,27 +109,6 @@ class ProfileControllerTest extends TestCase
                             'amount',
                             'locked_amount'
                         ]
-                    ],
-                    'orders' => [
-                        '*' => [
-                            'id',
-                            'symbol',
-                            'price',
-                            'amount',
-                            'side',
-                            'status'
-                        ]
-                    ],
-                    'trades' => [
-                        '*' => [
-                            'id',
-                            'side',
-                            'symbol',
-                            'price',
-                            'amount',
-                            'sales',
-                            'commission'
-                        ]
                     ]
                 ]
             ]);

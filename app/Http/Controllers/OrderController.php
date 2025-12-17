@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Contracts\OrderServiceInterface;
 use App\Contracts\OrderRepositoryInterface;
+use App\Contracts\TradeRepositoryInterface;
 use App\Http\Resources\OrderResource;
 use App\Http\Requests\GetOrdersRequest;
 use App\Http\Requests\CreateOrderRequest;
@@ -15,7 +16,8 @@ class OrderController extends Controller
 {
     public function __construct(
         protected OrderServiceInterface $service,
-        protected OrderRepositoryInterface $repository
+        protected OrderRepositoryInterface $repository,
+        protected TradeRepositoryInterface $tradeRepository
     ) {}
 
     public function getAll(GetOrdersRequest $request)
@@ -57,5 +59,15 @@ class OrderController extends Controller
                 'user' => $order->user->load('assets')
             ]
         ]);
+    }
+
+    public function getAllTrades(Request $request)
+    {
+        $trades = $this->tradeRepository->getAll($request->all());
+
+        return response()->json([
+                'message' => 'Trades fetched successfully!',
+                'data' => $trades
+            ]);
     }
 }
