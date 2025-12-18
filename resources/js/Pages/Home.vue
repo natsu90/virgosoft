@@ -14,7 +14,7 @@
         2: 'FILLED',
         3: 'CANCELLED'
     }
-    const orderForm = ref(null)
+    const orderForm = ref(false)
 
     const bodyClass = ['h-screen', 'overflow-hidden', 'flex', 'items-center', 'justify-center']
 
@@ -102,13 +102,11 @@
     }
 
     function openOrderForm() {
-        orderForm.value.classList.add('flex')
-        orderForm.value.classList.remove('hidden')
+        orderForm.value = true;
     }
 
     function closeOrderForm() {
-        orderForm.value.classList.add('hidden')
-        orderForm.value.classList.remove('flex')
+        orderForm.value = false;
     }
 
     async function getTrades() {
@@ -119,51 +117,115 @@
 </script>
 
 <template>
-<div ref="orderForm" id="modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-10">
-  
-  <!-- Modal Content -->
-  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm mx-auto">
-    
-    <!-- Modal Header -->
-    <div class="flex justify-between items-center mb-4">
-      <h2 class="text-xl font-semibold">Create a BUY/SELL Order</h2>
-      <button @click="closeOrderForm" id="closeModal" class="text-gray-500 hover:text-gray-700">&times;</button>
+
+<!-- Modal -->
+<div :class="['modal-overlay', { active: orderForm }]" @click="closeOrderForm">
+    <div class="modal-content bg-white border-t border-b sm:rounded sm:border shadow max-w-2xl w-full mx-4" @click.stop>
+        <!-- Modal Header -->
+        <div class="border-b">
+            <div class="flex justify-between items-center px-6 py-4">
+                <h3 class="text-blue-dark font-normal text-lg">Buy/Sell Cryptocurrency</h3>
+                <button @click="closeOrderForm" class="text-grey-dark hover:text-grey-darker">
+                    <svg class="fill-current h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path d="M10 8.586L2.929 1.515 1.515 2.929 8.586 10l-7.071 7.071 1.414 1.414L10 11.414l7.071 7.071 1.414-1.414L11.414 10l7.071-7.071-1.414-1.414L10 8.586z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="px-6 py-6">
+            <!-- Toggle BUY/SELL -->
+            <div class="mb-6">
+                <label class="block text-grey-darker text-sm font-medium mb-2">
+                    Transaction Type
+                </label>
+                <div class="flex border border-grey-light rounded overflow-hidden">
+                    <button 
+                        type="button" 
+                        @click="orderFormData.side = 'buy'"
+                        :class="[
+                            'flex-1 py-3 border-r border-grey-light',
+                            orderFormData.side === 'buy' 
+                                ? 'bg-blue text-white' 
+                                : 'bg-white text-grey-dark hover:bg-grey-lighter'
+                        ]">
+                        BUY
+                    </button>
+                    <button 
+                        type="button" 
+                        @click="orderFormData.side = 'sell'"
+                        :class="[
+                            'flex-1 py-3',
+                            orderFormData.side === 'sell' 
+                                ? 'bg-blue text-white' 
+                                : 'bg-white text-grey-dark hover:bg-grey-lighter'
+                        ]">
+                        SELL
+                    </button>
+                </div>
+            </div>
+
+            <!-- Cryptocurrency Dropdown -->
+            <div class="mb-6">
+                <label class="block text-grey-darker text-sm font-medium mb-2">
+                    Cryptocurrency
+                </label>
+                <div class="relative">
+                    <select 
+                        v-model="orderFormData.symbol"
+                        class="block appearance-none w-full bg-white border border-grey-light px-4 py-3 pr-8 rounded text-grey-darker leading-tight">
+                        <option value="BTC">Bitcoin (BTC)</option>
+                        <option value="ETH">Ethereum (ETH)</option>
+                    </select>
+                    <div class="pointer-events-none absolute pin-y pin-r flex items-center px-3 text-grey">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Amount Input -->
+            <div class="mb-6">
+                <label class="block text-grey-darker text-sm font-medium mb-2">
+                    Amount
+                </label>
+                <input 
+                    v-model.number="orderFormData.amount"
+                    type="number" 
+                    step="0.0001" 
+                    class="appearance-none border border-grey-light rounded w-full py-3 px-4 text-grey-darker leading-tight" 
+                    placeholder="0.0000">
+            </div>
+
+            <!-- Price Input -->
+            <div class="mb-4">
+                <label class="block text-grey-darker text-sm font-medium mb-2">
+                    Price (USD)
+                </label>
+                <input 
+                    v-model.number="orderFormData.price"
+                    type="number" 
+                    step="0.01" 
+                    class="appearance-none border border-grey-light rounded w-full py-3 px-4 text-grey-darker leading-tight" 
+                    placeholder="0.00">
+            </div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="border-t px-6 py-4 flex justify-end">
+            <button @click="closeOrderForm" class="appearance-none text-grey-dark border border-grey-light rounded px-4 py-2 mr-2 hover:border-grey-dark">
+                Cancel
+            </button>
+            <button @click="createOrder" class="bg-blue hover:bg-blue-dark text-white border border-blue-dark rounded px-4 py-2">
+                Confirm
+            </button>
+        </div>
     </div>
-    
-    <!-- Modal Form Body -->
-    <form @submit.prevent="createOrder">
-      <div class="mb-4">
-        <label for="side" class="block text-gray-700 text-sm font-bold mb-2">Side</label>
-        <!-- <input type="text" v-model="orderFormData.side" id="symbol" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"> -->
-        <select v-model="orderFormData.side">
-            <option value="buy">BUY</option>
-            <option value="sell">SELL</option>
-        </select>
-      </div>
-      <div class="mb-6">
-        <label for="symbol" class="block text-gray-700 text-sm font-bold mb-2">Symbol</label>
-        <!-- <input type="text" v-model="orderFormData.symbol" id="symbol" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"> -->
-        <select v-model="orderFormData.symbol">
-            <option value="BTC">BTC</option>
-            <option value="ETH">ETH</option>
-        </select>
-      </div>
-      <div class="mb-6">
-        <label for="amount" class="block text-gray-700 text-sm font-bold mb-2">Amount</label>
-        <input type="text" v-model="orderFormData.amount" id="amount" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline">
-      </div>
-      <div class="mb-6">
-        <label for="price" class="block text-gray-700 text-sm font-bold mb-2">Price</label>
-        <input type="text" v-model="orderFormData.price" id="price" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline">
-      </div>
-      <div class="flex items-center justify-between">
-        <button @click="createOrder" class="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-          Submit Order
-        </button>
-      </div>
-    </form>
-  </div>
 </div>
+
+
 <div class="font-sans bg-grey-lighter flex flex-col min-h-screen w-full">
   <div>
     <div class="bg-blue-dark">
@@ -407,5 +469,25 @@
 
     body {
         background: #edf2f7;
+    }
+
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 50;
+    }
+    .modal-overlay.active {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .modal-content {
+        max-height: 90vh;
+        overflow-y: auto;
     }
 </style>
