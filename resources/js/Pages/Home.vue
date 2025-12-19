@@ -37,8 +37,26 @@
             'OrderMatched',
             async (e) => {
                 toast.success('There is a matched order!')
+            },
+        ).listen();
+        useEcho(
+            `user.${user.value.id}`,
+            'UserUpdated',
+            async (e) => {
                 await getProfile()
+            },
+        ).listen();
+        useEcho(
+            `user.${user.value.id}`,
+            ['OrderUpdated', 'OrderCreated'],
+            async (e) => {
                 await getOrders()
+            },
+        ).listen();
+        useEcho(
+            `user.${user.value.id}`,
+            'TradeCreated',
+            async (e) => {
                 await getTrades()
             },
         ).listen();

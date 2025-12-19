@@ -30,7 +30,8 @@ class TradeCreated implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('channel-name'),
+            new PrivateChannel('user.'. $this->trade->buyOrder->user_id),
+            new PrivateChannel('user.'. $this->trade->sellOrder->user_id)
         ];
     }
 }

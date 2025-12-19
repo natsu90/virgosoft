@@ -45,4 +45,14 @@ class Trade extends BaseModel
     * @var string
     */
     const UPDATED_AT = null;
+
+    public function buyOrder()
+    {
+        return $this->belongsTo(Order::class, 'buy_order_id');
+    }
+
+    public function sellOrder()
+    {
+        return $this->belongsTo(Order::class, 'sell_order_id');
+    }
 }

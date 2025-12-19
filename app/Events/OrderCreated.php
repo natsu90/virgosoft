@@ -31,7 +31,7 @@ class OrderCreated implements ShouldDispatchAfterCommit
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('channel-name'),
+            new PrivateChannel('user.'. $this->order->user_id),
         ];
     }
 }
